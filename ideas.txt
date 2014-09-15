@@ -1,0 +1,7 @@
+Main goal
+Provide easy overview on project status at several levels
+
+
+
+Plugins:
+http://timeglider.com/widget/index.php - Timeglider JS
