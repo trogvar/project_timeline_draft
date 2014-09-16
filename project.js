@@ -87,15 +87,20 @@ var projectX = {
             date: "2014-11-07",
             title: "Final deadline",
             desc: "Live should be delivered no later than 7th of November"
-        },
+        }
     ],
 
     events: [
         new ProjectEvent("Design delivery", eventTypes.input_received, "2014-07-08", "Final designs were approved by the customer & delivered to dev-team"),
         new ProjectEvent("Kick-off with the team", eventTypes.custom, "2014-07-03", "Kick-off meeting was held with the team"),
         new ProjectEvent("Pencil planning", eventTypes.planning, "2014-07-04", "Pencil planning has been created and sent to the customer"),
+        new ProjectEvent("Product import received", eventTypes.input_received, "2014-07-03", "Data for product import has been received from the customer"),
+        new ProjectEvent("PSP creds", eventTypes.input_received, "2014-07-10", "Received PSP credentials for test account"),
+        new ProjectEvent("Initial beta", eventTypes.deployment_beta, "2014-09-03", "Beta has been created and initial deployment was done"),
+        new ProjectEvent("Pre-live", eventTypes.deployment_prelive, "2014-10-06", "Pre-live has been setup"),
+        new ProjectEvent("Live", eventTypes.deployment_live, "2014-11-03", "Live deployment was done"),
         new ProjectEvent("Pre-live date set", eventTypes.planning, "2014-07-06", "Pre-live date has been discussed and set as soft-deadline"),
-        new ProjectEvent("Live deadline", eventTypes.planning, "2014-07-06", "Hard deadline has been specified for live delivery"),
+        new ProjectEvent("Live deadline", eventTypes.planning, "2014-07-06", "Hard deadline has been specified for live delivery")
     ]
 
 }
