@@ -38,11 +38,20 @@
                 of: window
             });
 
+            /*
             var tg1 = $("#placement").timeline({
-                "data_source": "json/js_history.json",
+                //"data_source": "json/js_history.json",
+                "data_source": "json/history_brief.json",
                 "min_zoom": 15,
                 "max_zoom": 60,
                 "icon_folder": "timeglider/icons/"
+            });
+            */
+            var tg1 = $("#placement").timeline({
+                "data_source": timelines,
+                "min_zoom": 15,
+                "max_zoom": 60,
+                "icon_folder": "icons/"
             });
         });
     </script>

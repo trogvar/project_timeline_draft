@@ -1,67 +1,77 @@
 var eventTypes = {
     planning:{
+        id: "planning",
         title: "Planning",
-        icon: "icons/planning.png",
+        icon: "planning.png",
         desc: "Happens when some planning has been agreed with the customer"
     },
     input_received: {
+        id: "input_event",
         title: "Input event",
-        icon: "icons/input_event.png",
+        icon: "input_event.png",
         desc: "Happens when some input has been delivered to the team"
     },
 
     demo_internal: {
+        id: "demo_internal",
         title: "Internal demo",
-        icon: "icons/demo_internal.png",
+        icon: "demo_internal.png",
         desc: "Demo for CC/TC (internal)"
     },
 
     demo_external: {
+        id: "demo_external",
         title: "Demo with customer",
-        icon: "icons/demo_external.png",
+        icon: "demo_external.png",
         desc: "Demo with customer present"
     },
 
     deployment_beta: {
+        id: "deployment_beta",
         title: "Beta deployment",
-        icon: "icons/deployment_beta.png",
+        icon: "deployment_beta.png",
         desc: "Beta deployment"
     },
 
     deployment_prelive: {
+        id: "deployment_prelive",
         title: "Prelive deployment",
-        icon: "icons/deployment_prelive.png",
+        icon: "deployment_prelive.png",
         desc: "Prelive deployment"
     },
 
     deployment_live: {
+        id: "deployment_live",
         title: "Live deployment",
-        icon: "icons/deployment_live.png",
+        icon: "deployment_live.png",
         desc: "Live deployment"
     },
 
     testing_interfaces: {
+        id: "testing_interfaces",
         title: "Interface testing",
-        icon: "icons/testing_interfaces.png",
+        icon: "testing_interfaces.png",
         desc: "Testing of intefaces"
     },
 
     testing_integration: {
+        id: "testing_integration",
         title: "Integration testing",
-        icon: "icons/testing_integration.png",
+        icon: "testing_integration.png",
         desc: "Integration testing"
     },
 
     custom: {
+        id: "custom",
         title: "Custom event",
-        icon: "icons/custom.png",
+        icon: "custom.png",
         desc: "Custom event"
     }
 };
 
 function ProjectEvent(title, type, date, desc) {
     this.title = title || "no title";
-    this.type = eventTypes[type] || eventTypes.custom;
+    this.type = type;
     this.date = date || new Date();
     this.desc = desc || "";
 }
@@ -104,3 +114,43 @@ var projectX = {
     ]
 
 }
+
+function CreateTimegliderEvents(events) {
+
+    function CreateEventId(number) {
+        return number < 10 ? "00" + number : number < 100 ? "0" + number : number;
+    }
+
+    var result = [];
+    var counter = 1;
+    for (i in events) {
+        var e = events[i];
+        var event = {};
+        event.id = e.type.id + CreateEventId(counter++);
+        event.icon = e.type.icon;
+        event.title = e.title;
+        event.description = e.desc;
+        event.startdate = e.date;
+        event.enddate = e.date;
+        event.date_display = "day";
+
+        result.push(event);
+    }
+    return result;
+}
+function CreateTimegliderObj(src, id, focus_date) {
+    var result = {};
+    result.id = id;
+    result.title = src.title;
+    result.focus_date = focus_date || new Date();
+    result.initial_zoom = 43;
+    result.timezone = "+03:00";
+    result.icon_folder = "icons/"
+    result.events = CreateTimegliderEvents(src.events);
+
+    return result;
+}
+
+
+
+var timelines = [ CreateTimegliderObj(projectX, "project_x", "2014-08-01")];
