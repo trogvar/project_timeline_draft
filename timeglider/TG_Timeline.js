@@ -68,7 +68,9 @@
 		defaults: {
 			"title":  "Untitled",
 			"selected":false,
-			"css_class":''
+			"css_class":'',
+            "is_deadline":false,
+            "is_today":false
 		},
 		
 		initialize: function(ev) {
@@ -625,18 +627,3 @@
 	
 
 })(timeglider);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

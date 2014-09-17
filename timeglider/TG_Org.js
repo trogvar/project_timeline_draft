@@ -61,9 +61,17 @@
 	    * 
 	    */
 	    this.addBlock = function (evob, tickScope) {
-			evob.right = evob.left + evob.width;
+
+
+            evob.right = evob.left + evob.width;
 			evob.bottom = evob.top + evob.height;
 			evob.tickScope = tickScope;
+
+            if (evob.is_deadline) {
+                console.log("deadline: " + evob.id + ": " + evob.description);
+                console.log("\tleft: " + evob.left + "; top: " + evob.top + "; right: " + evob.right + "; bottom: " + evob.bottom);
+            }
+
 			me.freshBlocks.push(evob);
 			me.blocks.push(evob);
 	    };
@@ -167,8 +175,7 @@
 				selected_class = "";
 				lane_class = "";
 				in_lane = false;
-				
-				
+
 		    	// full sweep or just a tick added left or right
 				if (b.tickScope == tickScope) {
 					
@@ -268,7 +275,6 @@
 							 	// if things are higher than the ceiling, show plus signs instead,
 							 	// and we'll zoom in with these.
 								html += "<div id='" + b.id + "' class='timeglider-timeline-event tg-event-overflow' style='left:" + b.left  + "px;" + p_overf + "'>" + p_icon + "</div>";
-							        
 							} else {
 							
 								
@@ -283,7 +289,7 @@
 										selected_class = "selected";
 									}
 								
-									if (b.span == true) {
+									if (b.span == true || b.is_deadline) {
 										span_selector_class = "timeglider-event-spanning";
 										// add seconds into span data in case calculations
 										// are in demand in DOM
@@ -297,7 +303,7 @@
 										span_div = "";
 									}
 				
-									if (b.icon) {
+									if (b.icon && !b.is_deadline) {
 									  icon = "<img class='timeglider-event-icon' src='" + icon_f + b.icon + "' style='height:" + b.fontsize + "px;left:-" + (b.fontsize + 2) + "px; top:" + title_adj + "px'>";
 									} else {
 									  icon = '';
@@ -313,13 +319,14 @@
 									
 									// possible customized class
 									css_class = b.css_class || '';
-								 
+
+                                    if (!b.is_deadline && !b.is_today) {
 									// TODO: function for getting "standard" event shit
 									html += "<div class='timeglider-timeline-event " 
 										+ css_class + " " + span_selector_class + lane_class
 										+ " " + selected_class 
 										+ "' id='" + b.id + "' "
-										+ "style='width:" + b.width  + "px;"
+										+ "style='width:" + b.width + "px;"
 										+ "height:" + b.height + "px;"
 										+ "left:" + b.left  + "px;" 
 										+ "opacity:" + b.opacity + ";"
@@ -331,7 +338,45 @@
 											html += "<div class='timeglider-event-title' style='top:" + title_adj + "px'>" + b.title + "</div>";
 										}
 										html += "</div>";
-								
+                                    } else if (b.is_deadline) {
+                                        html += "<div class='timeglider-timeline-event "
+                                            + css_class
+                                            + "' id='" + b.id + "' "
+                                            + "style='z-index: -10;width:1000px;"
+                                            + b_span_color + ";"
+                                            + "transform: rotate(-90deg);"
+                                            + "transform-origin: left top 0;"
+                                            + "height:20px;"
+                                            + "left:" + b.left  + "px;"
+                                            + "opacity:" + b.opacity + ";"
+                                            + "top:0px;"
+                                            + "font-size:" + b.fontsize  + "px;text-align: left; padding-left: 150px;color:white;'>"
+                                            + icon + img + span_div;
+
+                                        if (!lane_sp_title) {
+                                            html += b.title;
+                                        }
+                                        html += "</div>";
+                                    } else if (b.is_today) {
+                                        html += "<div class='timeglider-timeline-event "
+                                            + "' id='" + b.id + "' "
+                                            + "style='z-index: -10;width:1000px;"
+                                            + "background-color: palegreen;border:1px dashed mediumseagreen;"
+                                            + "transform: rotate(-90deg);"
+                                            + "transform-origin: left top 0;"
+                                            + "height:20px;"
+                                            + "left:" + b.left  + "px;"
+                                            + "opacity:" + b.opacity + ";"
+                                            + "top:0px;"
+                                            + "font-size:" + b.fontsize  + "px;text-align: left; padding-left: 150px;color:white;'>"
+                                            + icon + img + span_div;
+
+                                        if (!lane_sp_title) {
+                                            html += "T O D A Y";
+                                        }
+                                        html += "</div>";
+                                    }
+
 								} // endif fontsize is > 2
 							
 							} // end if/else :: height > ceiling
