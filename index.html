@@ -50,8 +50,16 @@
             var tg1 = $("#placement").timeline({
                 "data_source": timelines,
                 "min_zoom": 15,
-                "max_zoom": 60,
-                "icon_folder": "icons/"
+                "max_zoom": 80,
+                "icon_folder": "icons/",
+                "constrain_to_data":true,
+                "collapsed":true,
+                "legend":{type:"default"},
+                "image_lane_height":100,
+                "show_footer":true,
+                "display_zoom_level":true,
+                "mousewheel":"zoom"
+
             });
         });
     </script>
@@ -59,7 +67,7 @@
 <body>
 
 <!-- html: -->
-<div id='placement' style="width:1200px; height: 600px;"></div>
+<div id='placement' style="width:1600px; height: 600px;"></div>
 
 </body>
 </html>

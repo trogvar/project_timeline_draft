@@ -69,11 +69,16 @@ var eventTypes = {
     }
 };
 
-function ProjectEvent(title, type, date, desc) {
+function ProjectEvent(title, type, desc, startdate, enddate, extras) {
     this.title = title || "no title";
     this.type = type;
-    this.date = date || new Date();
     this.desc = desc || "";
+    this.startdate = startdate || new Date();
+    if (enddate != undefined)
+        this.enddate = enddate;
+
+    for (var key in extras)
+        this[key] = extras[key];
 }
 
 var deadlineTypes = ["soft", "hard"];
@@ -101,16 +106,17 @@ var projectX = {
     ],
 
     events: [
-        new ProjectEvent("Design delivery", eventTypes.input_received, "2014-07-08", "Final designs were approved by the customer & delivered to dev-team"),
-        new ProjectEvent("Kick-off with the team", eventTypes.custom, "2014-07-03", "Kick-off meeting was held with the team"),
-        new ProjectEvent("Pencil planning", eventTypes.planning, "2014-07-04", "Pencil planning has been created and sent to the customer"),
-        new ProjectEvent("Product import received", eventTypes.input_received, "2014-07-03", "Data for product import has been received from the customer"),
-        new ProjectEvent("PSP creds", eventTypes.input_received, "2014-07-10", "Received PSP credentials for test account"),
-        new ProjectEvent("Initial beta", eventTypes.deployment_beta, "2014-09-03", "Beta has been created and initial deployment was done"),
-        new ProjectEvent("Pre-live", eventTypes.deployment_prelive, "2014-10-06", "Pre-live has been setup"),
-        new ProjectEvent("Live", eventTypes.deployment_live, "2014-11-03", "Live deployment was done"),
-        new ProjectEvent("Pre-live date set", eventTypes.planning, "2014-07-06", "Pre-live date has been discussed and set as soft-deadline"),
-        new ProjectEvent("Live deadline", eventTypes.planning, "2014-07-06", "Hard deadline has been specified for live delivery")
+        new ProjectEvent("Design delivery", eventTypes.input_received, "Final designs were approved by the customer & delivered to dev-team", "2014-07-08"),
+        new ProjectEvent("Kick-off with the team", eventTypes.custom, "Kick-off meeting was held with the team", "2014-07-03"),
+        new ProjectEvent("Pencil planning", eventTypes.planning, "Pencil planning has been created and sent to the customer", "2014-07-04"),
+        new ProjectEvent("Product import received", eventTypes.input_received, "Data for product import has been received from the customer", "2014-07-03"),
+        new ProjectEvent("PSP creds", eventTypes.input_received, "Received PSP credentials for test account", "2014-07-10"),
+        new ProjectEvent("Initial beta", eventTypes.deployment_beta, "Beta has been created and initial deployment was done", "2014-09-03", "2014-11-01", {"span_color":"khaki"}),
+        new ProjectEvent("Pre-live", eventTypes.deployment_prelive, "Pre-live has been setup", "2014-10-06"),
+        new ProjectEvent("Live", eventTypes.deployment_live, "Live deployment was done", "2014-11-03"),
+        new ProjectEvent("Pre-live date set", eventTypes.planning, "Pre-live date has been discussed and set as soft-deadline", "2014-07-06"),
+        new ProjectEvent("Live deadline", eventTypes.planning, "Hard deadline has been specified for live delivery", "2014-07-06"),
+        new ProjectEvent("Integration testing", eventTypes.testing_integration, "Testing integration website+interfaces+PSP", "2014-10-11", "2014-10-18",  {"span_color":"orange"})
     ]
 
 }
@@ -123,16 +129,26 @@ function CreateTimegliderEvents(events) {
 
     var result = [];
     var counter = 1;
-    for (i in events) {
+    for (var i in events) {
         var e = events[i];
         var event = {};
         event.id = e.type.id + CreateEventId(counter++);
-        event.icon = e.type.icon;
         event.title = e.title;
         event.description = e.desc;
-        event.startdate = e.date;
-        event.enddate = e.date;
+        event.startdate = e.startdate;
+
+        if (e.enddate != undefined)
+            event.enddate = e.enddate;
+
         event.date_display = "day";
+        event.importance = 30;
+        event.icon = e.type.icon;
+
+        if (e.span_color != undefined)
+            event.span_color = e.span_color;
+
+        if (e.css_class != undefined)
+            event.css_class = e.css_class;
 
         result.push(event);
     }
@@ -143,14 +159,20 @@ function CreateTimegliderObj(src, id, focus_date) {
     result.id = id;
     result.title = src.title;
     result.focus_date = focus_date || new Date();
-    result.initial_zoom = 43;
+    result.initial_zoom = 25;
     result.timezone = "+03:00";
-    result.icon_folder = "icons/"
+    result.icon_folder = "icons/";
+    result.collapsed = true;
     result.events = CreateTimegliderEvents(src.events);
+    result.legend = [];
+    for(var x in eventTypes) {
+        var t = eventTypes[x];
+        result.legend.push({"title":t.title, "icon":t.icon});
+    }
 
     return result;
 }
 
 
 
-var timelines = [ CreateTimegliderObj(projectX, "project_x", "2014-08-01")];
+var timelines = [ CreateTimegliderObj(projectX, "project_x", "2014-09-01")];
