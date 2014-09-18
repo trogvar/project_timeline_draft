@@ -64,7 +64,7 @@ var eventTypes = {
     kickoff: {
         id: "kickoff",
         title: "Kick-off meeting",
-        icon: "noe",
+        icon: "kickoff.png",
         desc: "Kick-off event to start the project with the development team"
     },
 
@@ -85,7 +85,7 @@ var eventTypes = {
     today: {
         id: "today",
         title: "Today",
-        icon: "none",
+        icon: "empty.png",
         desc: "Today is today"
     }
 };

@@ -66,12 +66,6 @@
             evob.right = evob.left + evob.width;
 			evob.bottom = evob.top + evob.height;
 			evob.tickScope = tickScope;
-
-            if (evob.is_deadline) {
-                console.log("deadline: " + evob.id + ": " + evob.description);
-                console.log("\tleft: " + evob.left + "; top: " + evob.top + "; right: " + evob.right + "; bottom: " + evob.bottom);
-            }
-
 			me.freshBlocks.push(evob);
 			me.blocks.push(evob);
 	    };
@@ -354,7 +348,7 @@
                                             + icon + img + span_div;
 
                                         if (!lane_sp_title) {
-                                            html += b.title;
+                                            html += b.title + " " + b.startdate;
                                         }
                                         html += "</div>";
                                     } else if (b.is_today) {
